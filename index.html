@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional residential remodeling and home building estimator">
+  <title>BuildRange Estimator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="#top" aria-label="BuildRange home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V34H23v-9h-6v9H6V18.5Z"/></svg>
+      </span>
+      <span>
+        <strong>BuildRange</strong>
+        <small>Residential Estimator</small>
+      </span>
+    </a>
+    <div class="header-actions">
+      <span class="save-status" id="saveStatus">Working draft auto-saved</span>
+      <button class="button button-secondary" id="openEstimates" type="button">Estimates</button>
+      <button class="button button-secondary" id="saveEstimate" type="button">Save estimate</button>
+      <button class="button button-secondary" id="newEstimate" type="button">New estimate</button>
+      <button class="button button-primary" id="printEstimate" type="button">Print / PDF</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Project estimate</p>
+        <h1 id="projectHeading">New residential project</h1>
+        <p class="hero-copy">Build a clear, defensible preliminary budget range from project scope and current cost assumptions.</p>
+      </div>
+      <div class="estimate-number">
+        <span>Estimate ID</span>
+        <strong id="estimateId">EST-0000</strong>
+      </div>
+    </section>
+
+    <nav class="step-nav" aria-label="Estimate sections">
+      <a class="active" href="#project">1. Project</a>
+      <a href="#scope">2. Scope & costs</a>
+      <a href="#assumptions">3. Assumptions</a>
+      <a href="#summary">4. Summary</a>
+      <a href="#allowancePlanner">Allowance planner</a>
+    </nav>
+
+    <div class="workspace">
+      <div class="editor-column">
+        <section class="card" id="project">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">01 · Project details</p>
+              <h2>Client and job information</h2>
+            </div>
+            <span class="section-note">Fields marked * are recommended</span>
+          </div>
+          <div class="form-grid">
+            <label>
+              Client name *
+              <input id="clientName" type="text" placeholder="Morgan & Taylor Reed">
+            </label>
+            <label>
+              Project type *
+              <select id="projectType">
+                <option value="Kitchen remodel">Kitchen remodel</option>
+                <option value="Bathroom remodel">Bathroom remodel</option>
+                <option value="Whole-home remodel">Whole-home remodel</option>
+                <option value="Home addition">Home addition</option>
+                <option value="Custom home build">Custom home build</option>
+                <option value="Basement finish">Basement finish</option>
+                <option value="Exterior renovation">Exterior renovation</option>
+                <option value="Other residential project">Other residential project</option>
+              </select>
+            </label>
+            <label class="wide">
+              Project address *
+              <input id="projectAddress" type="text" placeholder="1240 Cedar Avenue, Springfield">
+            </label>
+            <label>
+              Client email
+              <input id="clientEmail" type="email" placeholder="client@example.com">
+            </label>
+            <label>
+              Client phone
+              <input id="clientPhone" type="tel" placeholder="(555) 555-0142">
+            </label>
+            <label>
+              Target start
+              <input id="targetStart" type="date">
+            </label>
+            <label>
+              Approx. square footage
+              <input id="squareFootage" type="number" min="0" step="1" placeholder="1,850">
+            </label>
+            <label class="wide">
+              Project notes
+              <textarea id="projectNotes" rows="3" placeholder="Key client priorities, existing conditions, access constraints, finish expectations..."></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="card" id="scope">
+          <div class="section-heading scope-heading">
+            <div>
+              <p class="eyebrow">02 · Scope & costs</p>
+              <h2>Build the project scope</h2>
+            </div>
+            <div class="scope-actions">
+              <label class="template-label">
+                <span class="sr-only">Choose a scope template</span>
+                <select id="templateSelect">
+                  <option value="">Load detailed assembly...</option>
+                  <option value="kitchen">Kitchen remodel assembly</option>
+                  <option value="bathroom">Bathroom remodel assembly</option>
+                  <option value="addition">Home addition assembly</option>
+                  <option value="custom">Custom home assembly</option>
+                </select>
+              </label>
+              <button class="button button-secondary" id="addItem" type="button">+ Add item</button>
+            </div>
+          </div>
+
+          <div class="benchmark-banner">
+            <div>
+              <span>National cost basis</span>
+              <strong id="benchmarkTitle">2025 kitchen remodeling benchmarks</strong>
+              <p id="benchmarkDescription">National project costs from minor midrange through major upscale work.</p>
+            </div>
+            <a id="benchmarkSource" href="https://www.jlconline.com/cost-vs-value/2025/" target="_blank" rel="noreferrer">View source</a>
+          </div>
+
+          <div class="historical-benchmark" id="historicalBenchmark" hidden>
+            <div class="historical-heading">
+              <div>
+                <span>Company historical reference</span>
+                <strong>329 Chapelwood cottage home</strong>
+                <p>Completed-project reference · Dothan, Alabama · 1,606 HVAC SF · 2,265 SF under roof</p>
+              </div>
+              <div class="historical-primary">
+                <strong>$106.34</strong>
+                <span>direct cost / HVAC SF</span>
+              </div>
+            </div>
+            <div class="historical-metrics">
+              <div><span>Direct construction</span><strong>$170,788</strong></div>
+              <div><span>Builder OH&amp;P</span><strong>$17,139</strong></div>
+              <div><span>Build + OH&amp;P</span><strong>$117.02/SF</strong></div>
+              <div><span>Total pro forma</span><strong>$133.42/SF</strong></div>
+            </div>
+            <div class="historical-comparison">
+              <span>Current estimate comparison</span>
+              <strong id="historicalComparison">Enter project square footage to compare.</strong>
+            </div>
+            <details>
+              <summary>View direct-cost mix</summary>
+              <div class="historical-division-grid" id="historicalDivisionGrid"></div>
+            </details>
+          </div>
+
+          <div class="proposal-reference" id="proposalReference">
+            <div class="proposal-reference-heading">
+              <div>
+                <span>Company proposal workbook reference</span>
+                <strong>Proposal Spreadsheet.xlsx</strong>
+                <p>Broad low/high ranges from the uploaded workbook. These are reference checks only and do not change the estimate total.</p>
+              </div>
+              <strong id="proposalReferenceBasis">$ / SF</strong>
+            </div>
+            <div class="proposal-band-grid" id="proposalBandGrid"></div>
+            <details>
+              <summary>View phase-level reference ranges</summary>
+              <div class="proposal-phase-grid" id="proposalPhaseGrid"></div>
+            </details>
+          </div>
+
+          <div class="cost-library">
+            <div class="library-copy">
+              <span>Workbook cost database</span>
+              <strong>Search and add a detailed line item</strong>
+              <small><span id="databaseCount">78</span> national-average records imported from your workbook</small>
+            </div>
+            <label>
+              <span class="sr-only">Filter cost database by division</span>
+              <select id="divisionFilter">
+                <option value="">All divisions</option>
+              </select>
+            </label>
+            <label class="library-search">
+              <span class="sr-only">Search cost database</span>
+              <input id="costSearch" type="search" list="costOptions" placeholder="Search concrete, driveway, framing...">
+              <datalist id="costOptions"></datalist>
+            </label>
+            <button class="button button-primary" id="addDatabaseItem" type="button">Add cost item</button>
+          </div>
+
+          <div class="foundation-control" id="foundationControl" hidden>
+            <div>
+              <span>Foundation pricing method</span>
+              <strong>Choose one method to prevent overlapping costs</strong>
+            </div>
+            <label>
+              <span class="sr-only">Foundation pricing method</span>
+              <select id="foundationMethod">
+                <option value="slab">Slab-on-grade system (all-in)</option>
+                <option value="crawlspace">Crawlspace system (all-in)</option>
+                <option value="components">Detailed component takeoff</option>
+              </select>
+            </label>
+            <p id="foundationMethodNote"></p>
+          </div>
+          <div class="framing-control" id="framingControl" hidden>
+            <div>
+              <span>Framing pricing method</span>
+              <strong>Choose one method to prevent overlapping framing costs</strong>
+            </div>
+            <label>
+              <span class="sr-only">Framing pricing method</span>
+              <select id="framingMethod">
+                <option value="package">Rough framing package (all-in)</option>
+                <option value="components">Detailed component takeoff</option>
+              </select>
+            </label>
+            <p id="framingMethodNote"></p>
+          </div>
+          <div class="hvac-control" id="hvacControl" hidden>
+            <div>
+              <span>HVAC pricing method</span>
+              <strong>Choose an all-in system or a component takeoff</strong>
+            </div>
+            <label>
+              <span class="sr-only">HVAC pricing method</span>
+              <select id="hvacMethod">
+                <option value="package">HVAC system with ductwork (all-in)</option>
+                <option value="components">Equipment and ductwork components</option>
+              </select>
+            </label>
+            <p id="hvacMethodNote"></p>
+          </div>
+          <div class="scope-warning" id="scopeWarning" hidden></div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cost code & scope item</th>
+                  <th>Division</th>
+                  <th>Qty</th>
+                  <th>Unit</th>
+                  <th>Nat. low</th>
+                  <th>Nat. mid</th>
+                  <th>Nat. high</th>
+                  <th class="amount-column">Range</th>
+                  <th><span class="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="scopeRows"></tbody>
+            </table>
+          </div>
+          <button class="add-row-link" id="addItemBottom" type="button">+ Add custom scope item</button>
+        </section>
+
+        <section class="card" id="assumptions">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">03 · Pricing assumptions</p>
+              <h2>Risk, markup, and allowances</h2>
+            </div>
+            <span class="section-note">Applied to the subtotal</span>
+          </div>
+          <div class="assumption-grid">
+            <label>
+              Contingency
+              <div class="input-suffix"><input id="contingency" type="number" min="0" max="100" step="0.5" value="10"><span>%</span></div>
+              <small>Unknown conditions or change orders</small>
+            </label>
+            <label>
+              OH&amp;P
+              <div class="input-suffix"><input id="ohp" type="number" min="0" max="100" step="0.5" value="20"><span>%</span></div>
+              <small>Combined contractor overhead and profit, applied after contingency</small>
+            </label>
+            <label>
+              Sales tax
+              <div class="input-suffix"><input id="salesTax" type="number" min="0" max="100" step="0.01" value="9"><span>%</span></div>
+              <small>Use only where applicable</small>
+            </label>
+            <label>
+              Permit allowance
+              <div class="input-prefix"><span>$</span><input id="permitAllowance" type="number" min="0" step="100" value="2500"></div>
+              <small>Permits, plan review, and inspections</small>
+            </label>
+            <label>
+              Design allowance
+              <div class="input-prefix"><span>$</span><input id="designAllowance" type="number" min="0" step="100" value="0"></div>
+              <small>Architecture, engineering, and design</small>
+            </label>
+            <label>
+              Local market discount
+              <div class="input-suffix"><input id="localDiscount" type="number" min="0" max="50" step="0.5" value="15"><span>%</span></div>
+              <small>Reduces national unit costs by 15% for the local market</small>
+            </label>
+            <label>
+              Client proposal range
+              <div class="input-suffix"><input id="clientRangePercent" type="number" min="5" max="35" step="1" value="12"><span>%</span></div>
+              <small>Shows clients a curated range around the expected budget</small>
+            </label>
+          </div>
+          <div class="cost-basis-note">
+            <strong>Cost basis:</strong>
+            <span id="costBasisNote">2025 national averages allocated across the included scope for preliminary budgeting.</span>
+          </div>
+          <label class="checkbox-row">
+            <input id="roundTotals" type="checkbox" checked>
+            <span>
+              <strong>Round client-facing totals</strong>
+              <small>Rounds the final range to the nearest $1,000 for preliminary budgeting.</small>
+            </span>
+          </label>
+        </section>
+      </div>
+
+      <aside class="summary-column" id="summary">
+        <section class="summary-card">
+          <div class="summary-header">
+            <div>
+              <p class="eyebrow">Preliminary budget</p>
+              <h2>Client proposal range</h2>
+            </div>
+            <span class="range-badge">Live</span>
+          </div>
+          <div class="primary-range">
+            <span id="lowTotal">$0</span>
+            <small>to</small>
+            <span id="highTotal">$0</span>
+          </div>
+          <div class="confidence-row">
+            <span>Expected budget</span>
+            <strong id="expectedTotal">$0</strong>
+          </div>
+          <div class="range-track" aria-hidden="true">
+            <span class="range-fill"></span>
+            <span class="range-marker"></span>
+          </div>
+          <p class="range-explainer" id="rangeExplainer">This range reflects the scope and assumptions entered. It is a preliminary budget, not a fixed-price proposal.</p>
+
+          <div class="cost-breakdown">
+            <div class="internal-range-line"><span>Internal estimator guardrail</span><strong id="internalRange">$0 – $0</strong></div>
+            <div><span>Direct project costs</span><strong id="directCosts">$0 – $0</strong></div>
+            <div><span>Permit & design allowances</span><strong id="allowancesTotal">$0</strong></div>
+            <div><span>Contingency</span><strong id="contingencyTotal">$0 – $0</strong></div>
+            <div><span>OH&amp;P</span><strong id="ohpTotal">$0 – $0</strong></div>
+            <div><span>Sales tax</span><strong id="taxTotal">$0 – $0</strong></div>
+            <div class="benchmark-line"><span>Published national reference</span><strong id="nationalBenchmark">$0</strong></div>
+          </div>
+
+          <div class="summary-actions">
+            <button class="button button-primary button-full" id="reviewEstimate" type="button">Review client summary</button>
+            <button class="text-button" id="copySummary" type="button">Copy budget summary</button>
+          </div>
+        </section>
+
+        <section class="tip-card">
+          <strong>Estimate health</strong>
+          <div class="health-score"><span id="healthScore">0%</span><div><i id="healthBar"></i></div></div>
+          <p id="healthMessage">Add project details and scope items to strengthen this estimate.</p>
+          <div class="health-suggestions" id="healthSuggestions"></div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="card allowance-planner" id="allowancePlanner">
+      <div class="section-heading allowance-planner-heading">
+        <div>
+          <p class="eyebrow">Interactive planning tool</p>
+          <h2>Finish allowance planner</h2>
+          <p class="allowance-intro">Explore how a target construction price per square foot may translate into finish allowances.</p>
+        </div>
+        <span class="scenario-badge">Scenario only</span>
+      </div>
+
+      <div class="allowance-planner-grid">
+        <div class="allowance-controls">
+          <div class="planner-square-feet">
+            <label>
+              Planning square footage
+              <div class="input-suffix"><input id="plannerSquareFeet" type="number" min="100" step="50" value="2000"><span>SF</span></div>
+            </label>
+            <button class="button button-secondary" id="syncPlannerSquareFeet" type="button">Use project SF</button>
+          </div>
+
+          <div class="price-slider-heading">
+            <div>
+              <span>Target construction budget</span>
+              <strong id="plannerBudget">$550,000</strong>
+            </div>
+            <div class="price-per-foot-output">
+              <strong id="pricePerSquareFootOutput">$275</strong>
+              <span>per SF</span>
+            </div>
+          </div>
+
+          <input class="price-per-foot-slider" id="pricePerSquareFoot" type="range" min="150" max="500" step="5" value="275" aria-label="Target construction price per square foot">
+          <div class="slider-scale" aria-hidden="true">
+            <span>$150</span>
+            <span>$250</span>
+            <span>$350</span>
+            <span>$500+</span>
+          </div>
+
+          <div class="finish-level">
+            <span>Indicative finish level</span>
+            <strong id="finishLevel">Standard custom</strong>
+            <p id="finishLevelDescription">Balanced selections with upgraded finishes in priority areas.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="allowance-summary">
+            <span>Suggested finish allowance total</span>
+            <strong id="plannerAllowanceTotal">$0</strong>
+            <small id="plannerAllowanceShare">Based on the selected planning scenario</small>
+          </div>
+          <div class="allowance-results" id="allowanceResults"></div>
+        </div>
+      </div>
+
+      <div class="scenario-notice">
+        <strong>Independent planning panel</strong>
+        <span>These suggested allowances do not change scope items, estimate totals, saved estimates, or the client summary.</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="summaryModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="closeModal" type="button" aria-label="Close">×</button>
+      <div class="document-brand">
+        <span class="brand-mark small" aria-hidden="true">
+          <svg viewBox="0 0 40 40"><path d="M6 18.5 20 7l14 11.5V34H23v-9h-6v9H6V18.5Z"/></svg>
+        </span>
+        <div><strong>BuildRange Construction</strong><small>Preliminary Project Budget</small></div>
+      </div>
+      <div class="document-heading">
+        <p class="eyebrow" id="modalEstimateId"></p>
+        <h2 id="modalTitle">Project budget estimate</h2>
+        <p id="modalMeta"></p>
+      </div>
+      <div class="document-range">
+        <span>Preliminary budget range</span>
+        <strong id="modalRange">$0 – $0</strong>
+        <small id="modalExpected">Expected budget: $0</small>
+      </div>
+      <div class="document-section">
+        <h3>Included scope</h3>
+        <div id="modalScope"></div>
+      </div>
+      <div class="document-section">
+        <h3>Important assumptions</h3>
+        <p id="modalAssumptions"></p>
+      </div>
+      <p class="disclaimer">This preliminary estimate is provided for budgeting and planning purposes only. Final pricing is subject to completed plans, product selections, site verification, subcontractor bids, and a signed construction agreement.</p>
+      <button class="button button-primary button-full modal-print" id="modalPrint" type="button">Print client summary</button>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="estimateLibraryModal" hidden>
+    <section class="modal library-modal" role="dialog" aria-modal="true" aria-labelledby="libraryTitle">
+      <button class="modal-close" id="closeLibrary" type="button" aria-label="Close">×</button>
+      <div class="library-modal-heading">
+        <p class="eyebrow">Saved locally in this browser</p>
+        <h2 id="libraryTitle">Estimate library</h2>
+        <p>Open a saved estimate, create a working copy, or remove an old record.</p>
+      </div>
+      <div class="saved-estimate-list" id="savedEstimateList"></div>
+      <button class="button button-primary button-full" id="saveFromLibrary" type="button">Save current estimate</button>
+      <p class="library-storage-note">These estimates remain on this computer and browser. They are not yet backed up to a company database.</p>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="cost-database.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
